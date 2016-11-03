@@ -21,6 +21,7 @@
 /set sets a new key with the value "this message will self-destruct in 10 seconds"  
 Key expires in 10 seconds.  
 ![Alt](https://github.ncsu.edu/psjawale/HW3/blob/master/screenshots/set.png "Set")  
+
 /get fetches the value of the key and sends it to the client.  
 ![Alt](https://github.ncsu.edu/psjawale/HW3/blob/master/screenshots/get.png "Get")
 
@@ -35,6 +36,7 @@ command line:
 #### Part 3 : upload/meow
 /upload stores all the uploaded images in a queue.  
 ![Alt](https://github.ncsu.edu/psjawale/HW3/blob/master/screenshots/upload.png "upload")  
+
 /meow displays the most recent image to the client and removes the image from the queue.  
 ![Alt](https://github.ncsu.edu/psjawale/HW3/blob/master/screenshots/meow.png "meow")
 
