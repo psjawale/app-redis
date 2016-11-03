@@ -22,7 +22,7 @@ var client = redis.createClient(6379, '127.0.0.1', {})
 
 // Add hook to make it easier to get all visited URLS.
 app.use(function(req, res, next) 
-{   console.log("\n")
+{   
    	console.log(req.method, req.url);
     client.lpush("RecentQueue", req.url, function(err, reply) {
    // console.log(reply)
@@ -46,7 +46,8 @@ app.get('/set', function(req, res) {
   var message = "this message will self-destruct in 10 seconds"
   client.set("key1", message);
   client.expire("key1", 10);
-  res.send(message);
+  var str = "Key1 was set with the value: 'this message will self-destruct in 10 seconds'"
+  res.send(str);
 })
 
 app.get('/get',function(req, res){
@@ -123,7 +124,6 @@ app.get('/spawn', function(req, res){
     res.send(str)
 	})
     port = port + 1
-   //res.send("Spawning new server at%s",port)
 })
 
 //Listing server
@@ -139,7 +139,7 @@ app.get('/destroy',function(req,res) {
 
   client.llen('ServersQueue',function(err,data1){
     if (data1 == 1){
-       var str = "Server can not be destroyed as only one server is running"
+       var str = "Server cannot be destroyed as only one server is running"
        console.log(str)
        res.send(str)
     }else {
@@ -170,7 +170,7 @@ var server = app.listen(PORT, function () {
   var host = server.address().address
   var port = server.address().port
   var serverURL = "http://localhost:"+port;
-  console.log(serverURL)
+  //console.log(serverURL)
   client.lpush('ServersQueue',serverURL,function(err, reply) {})
   console.log('Example app listening at http://%s:%s', host, port)
 })
@@ -180,7 +180,7 @@ var server = app.listen(PORT, function () {
 var proxyServer = http.createServer(function(req, res) {
 
 			client.rpoplpush('ServersQueue','ServersQueue',function(err,data){
-        console.log("\nServer:%s",data);
+        console.log("\nRequest routed to server: %s",data);
 
 			  proxy.web(req, res, { target: data});
 		});
