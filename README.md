@@ -20,24 +20,46 @@
 #### Part 1 : set/get
 /set sets a new key with the value "this message will self-destruct in 10 seconds"  
 Key expires in 10 seconds.  
-/get fetches the value of the key and sends it to the client.
+![Alt](https://github.ncsu.edu/psjawale/HW3/blob/master/screenshots/set.png "Set")  
+/get fetches the value of the key and sends it to the client.  
+![Alt](https://github.ncsu.edu/psjawale/HW3/blob/master/screenshots/get.png "Get")
 
 #### Part 2 : recent 
-/recent stores the most recent 5 sites visited, and returns that to the client.
+/recent stores the most recent 5 sites visited, and returns that to the client.  
+
+![Alt](https://github.ncsu.edu/psjawale/HW3/blob/master/screenshots/recent2.png "recent 2")  
+command line:  
+![Alt](https://github.ncsu.edu/psjawale/HW3/blob/master/screenshots/recent1.png "recent 1")
+
 
 #### Part 3 : upload/meow
 /upload stores all the uploaded images in a queue.  
-/meow displays the most recent image to the client and removes the image from the queue.
+![Alt](https://github.ncsu.edu/psjawale/HW3/blob/master/screenshots/upload.png "upload")
+/meow displays the most recent image to the client and removes the image from the queue.  
+![Alt](https://github.ncsu.edu/psjawale/HW3/blob/master/screenshots/meow.png "meow")
 
 #### Part 4 : spawn  
-/spawn creates a new app server running on a new port and stores the new app server URL in a list.
+/spawn creates a new app server running on a new port and stores the new app server URL in a list.  
+![Alt](https://github.ncsu.edu/psjawale/HW3/blob/master/screenshots/spawn2.png "spawn 2")  
+
+![Alt](https://github.ncsu.edu/psjawale/HW3/blob/master/screenshots/spawn1.png "spawn 1")  
 
 #### Part  5: destroy
 /destroy selects a random server from the list of available server and removes it from the list and server is not used to handle any requests.  
-If only one server is available in the list of active servers then this server cannot be destroyed.
+If only one server is available in the list of active servers then this server cannot be destroyed.  
+![Alt](https://github.ncsu.edu/psjawale/HW3/blob/master/screenshots/destroy.png "destroy")  
 
-#### Part 7 : Proxy server
-Requests made on the proxy server port is uniformly distributed among all the available servers in a round robin fashion.
+#### Part  6: listservers  
+All the available servers are stored in redis queue.  
+/listservers displays all the servers in this queue.  
+
+![Alt](https://github.ncsu.edu/psjawale/HW3/blob/master/screenshots/listservers.png "listserver") 
+
+
+#### Part 7 : proxy server
+Requests made on the proxy server port is uniformly distributed among all the available servers in a round robin fashion.  
+
+![Alt](https://github.ncsu.edu/psjawale/HW3/blob/master/screenshots/proxy server.png "proxy")
 
 ### Screencast :
-YouTube link: https://youtu.be/g3Qnl5Jk0JQ
+YouTube [link](https://youtu.be/g3Qnl5Jk0JQ)
