@@ -11,12 +11,12 @@ var httpProxy = require('http-proxy')
 var options = {}
 var proxy  = httpProxy.createProxyServer(options)
 
-var args = process.argv.slice(2);
-var PORT = args[0];
+//var args = process.argv.slice(2);
+//var PORT = args[0];
 port = 3010;
 
 // REDIS
-var client = redis.createClient(6379, '127.0.0.1', {})
+var client = redis.createClient(6379, '162.243.204.67', {})
 
 ///////////// WEB ROUTES
 
@@ -24,10 +24,10 @@ var client = redis.createClient(6379, '127.0.0.1', {})
 app.use(function(req, res, next) 
 {   
    	console.log(req.method, req.url);
-    //client.lpush("RecentQueue", req.url, function(err, reply) {
-   // console.log(reply)
+    client.lpush("RecentQueue", req.url, function(err, reply) {
+    //console.log(reply)
   })
-  //  client.ltrim("RecentQueue", 0, 4);
+   client.ltrim("RecentQueue", 0, 4);
 	next(); // Passing the request to the next handler in the stack.
 });
 
@@ -86,29 +86,6 @@ app.get('/meow', function(req, res) {
 })
 
 //Launch new server
-// app.get('/spawn', function(req, res){
-//   exec('forever start main.js '+port, function(err, out, code) 
-//     {
-//       console.log("attempting to launch new server");
-//       if (err instanceof Error)
-//            throw err;
-//       if( err )
-//         {
-//           console.error( err );
-//         }
-//       var serverURL = "http://localhost:"+port;
-//       port = port +1
-//       console.log(serverURL)
-//       client.lpush('ServersQueue',serverURL,function(err, reply) {
-//         //console.log(reply)
-//       })
-//       var serverURL = "http://localhost:"+port;
-//       var str = "Spawning new server at "+serverURL;
-//       res.send(str)
-//     });
-// })
-
-//Launch new server
 app.get('/spawn', function(req, res){
 
 	var server = app.listen(port, function () {
@@ -156,34 +133,33 @@ app.get('/destroy',function(req,res) {
   })
 }) 
 
-// //delete List
-// app.get('/deleteList', function(req, res) {
-//   client.del('ServersQueue',function(err,message){
-//     var str = "ServersQueue is now empty"
-//     res.send(str)
-//   })
-// })
+//delete List
+app.get('/deleteList', function(req, res) {
+  client.del('ServersQueue',function(err,message){
+    var str = "ServersQueue is now empty"
+    res.send(str)
+  })
+})
 
 //HTTP Server
-var server = app.listen(PORT, function () {
+var server = app.listen(3001, function () {
 
   var host = server.address().address
   var port = server.address().port
-  var serverURL = "http://localhost:"+port;
+  var serverURL = "http://localhost:3001";
   //console.log(serverURL)
  // client.lpush('ServersQueue',serverURL,function(err, reply) {})
   console.log('Example app listening at http://%s:%s', host, port)
 })
 
-// //PROXY SERVER
-// //client.lpush(['serverPorts',3001,3002],function(){});	
-// var proxyServer = http.createServer(function(req, res) {
+//PROXY SERVER
+var proxyServer = http.createServer(function(req, res) {
 
-// 			client.rpoplpush('ServersQueue','ServersQueue',function(err,data){
-//         console.log("\nRequest routed to server: %s",data);
+			client.rpoplpush('ServersQueue','ServersQueue',function(err,data){
+        console.log("\nRequest routed to server: %s",data);
 
-// 			  proxy.web(req, res, { target: data});
-// 		});
+			  proxy.web(req, res, { target: data});
+		});
 	  
-// });
-// proxyServer.listen(3000);
+});
+proxyServer.listen(3000);
