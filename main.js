@@ -24,10 +24,10 @@ var client = redis.createClient(6379, '127.0.0.1', {})
 app.use(function(req, res, next) 
 {   
    	console.log(req.method, req.url);
-    client.lpush("RecentQueue", req.url, function(err, reply) {
+    //client.lpush("RecentQueue", req.url, function(err, reply) {
    // console.log(reply)
   })
-    client.ltrim("RecentQueue", 0, 4);
+  //  client.ltrim("RecentQueue", 0, 4);
 	next(); // Passing the request to the next handler in the stack.
 });
 
@@ -156,13 +156,13 @@ app.get('/destroy',function(req,res) {
   })
 }) 
 
-//delete List
-app.get('/deleteList', function(req, res) {
-  client.del('ServersQueue',function(err,message){
-    var str = "ServersQueue is now empty"
-    res.send(str)
-  })
-})
+// //delete List
+// app.get('/deleteList', function(req, res) {
+//   client.del('ServersQueue',function(err,message){
+//     var str = "ServersQueue is now empty"
+//     res.send(str)
+//   })
+// })
 
 //HTTP Server
 var server = app.listen(PORT, function () {
@@ -171,19 +171,19 @@ var server = app.listen(PORT, function () {
   var port = server.address().port
   var serverURL = "http://localhost:"+port;
   //console.log(serverURL)
-  client.lpush('ServersQueue',serverURL,function(err, reply) {})
+ // client.lpush('ServersQueue',serverURL,function(err, reply) {})
   console.log('Example app listening at http://%s:%s', host, port)
 })
 
-//PROXY SERVER
-//client.lpush(['serverPorts',3001,3002],function(){});	
-var proxyServer = http.createServer(function(req, res) {
+// //PROXY SERVER
+// //client.lpush(['serverPorts',3001,3002],function(){});	
+// var proxyServer = http.createServer(function(req, res) {
 
-			client.rpoplpush('ServersQueue','ServersQueue',function(err,data){
-        console.log("\nRequest routed to server: %s",data);
+// 			client.rpoplpush('ServersQueue','ServersQueue',function(err,data){
+//         console.log("\nRequest routed to server: %s",data);
 
-			  proxy.web(req, res, { target: data});
-		});
+// 			  proxy.web(req, res, { target: data});
+// 		});
 	  
-});
-proxyServer.listen(3000);
+// });
+// proxyServer.listen(3000);
