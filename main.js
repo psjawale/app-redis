@@ -32,9 +32,18 @@ app.use(function(req, res, next)
 });
 
 app.get('/recent', function(req, res) {
-  client.lrange("RecentQueue", 0, 4, function(err, message) {
-      res.send(message);
-      console.log(message);
+  client.get("featureflag",function(err, value){
+    if(value === 'true'){
+        client.lrange("RecentQueue", 0, 4, function(err, message) {
+        res.send(message);
+        console.log(message);
+        })
+    }
+    else
+    {
+        var str = "This feature is not yet available";
+        res.send(str);
+    }
   })
 })
 
