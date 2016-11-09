@@ -18,6 +18,6 @@ do
         echo CPU usage is high. $CPU% | mail -s "High CPU usage for $sysname" pooja.jawale@gmail.com
 
         fi
-        sleep 60
+        sleep 15
 
 done
