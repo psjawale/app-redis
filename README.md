@@ -2,6 +2,9 @@
 
 ### Setup
 
+
+
+
 * Clone this repo, run `npm install`.
 * Install redis and run on localhost:6379
 
