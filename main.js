@@ -1,3 +1,4 @@
+//function makeServer() {
 var redis = require('redis')
 var multer  = require('multer')
 var express = require('express')
@@ -48,7 +49,7 @@ app.get('/recent', function(req, res) {
 })
 
 app.get('/', function(req, res) {
-  res.send('hello world')
+  res.send('Request sent to Production Server')
 })
 
 app.get('/set', function(req, res) { 
@@ -172,3 +173,7 @@ var proxyServer = http.createServer(function(req, res) {
 	  
 });
 proxyServer.listen(3000);
+
+//   return server;
+// }
+// module.exports = makeServer;
