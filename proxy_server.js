@@ -17,8 +17,8 @@ var server = http.createServer(function(req, res) {
 				proxy.web(req, res, {target: "http://162.243.204.67:3020"}, function(err, data) {});
 			} else if (request == 2) {
 				client.rpoplpush('CanaryQueue','CanaryQueue',function(err,canaryUrl){
-        		console.log("\nRequest routed to canary server: %s",data);
-        		proxy.web(req, res, {target: canaryUrl}, function(err, data) {}); 
+        			console.log("\nRequest routed to canary server: %s",canaryUrl);
+        			proxy.web(req, res, {target: canaryUrl}, function(err, data) {}); 
 				});
 				request = 0;				
 			}
