@@ -1,2 +1,2 @@
 
-Aws_Instance ansible_host=54.187.5.228 ansible_user=ubuntu ansible_ssh_private_key_file=aws_instance1.pem
+Aws_Instance ansible_host=54.187.5.228 ansible_user=ubuntu ansible_ssh_private_key_file=/var/lib/jenkins/workspace/M3-Job-Deployment/aws_instance1.pem
