@@ -1,0 +1,19 @@
+---
+- hosts: all
+  sudo: true
+
+  tasks:
+    - name: Installing nodeJs
+      apt: pkg=nodejs state=installed update_cache=true
+
+    - name: Installing npm
+      apt: pkg=npm state=installed update_cache=true
+
+    - name: Installing git
+      apt: pkg=git state=installed update_cache=true
+
+    - name: Create the project directory.
+      file: state=directory path=/home/ubuntu/app mode=0777
+
+    - name: set symbolic link
+      command: ln -s /usr/bin/nodejs /usr/local/bin/node
