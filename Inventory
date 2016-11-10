@@ -1,0 +1,2 @@
+
+Aws_Instance ansible_host=54.187.5.228 ansible_user=ubuntu ansible_ssh_private_key_file=/Users/Pooja_Jawale/Devops/Milestone-3/aws-instance/aws_instance1.pem
