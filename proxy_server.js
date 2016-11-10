@@ -10,20 +10,20 @@ var request = 0;
 
 var server = http.createServer(function(req, res) {
 	client.get("alertKey", function(err,value){
-		if(value == 1) {	
+		if(value == "false") {	
 			if (request < 2) {
 				request++;
-				proxy.web(req, res, {target: 'http://54.213.155.64:3001'}, function(err, data) {
+				proxy.web(req, res, {target: 'http://54.213.155.181:3001'}, function(err, data) {
 					console.log("Fetching request from production");
 				});
 			} else if (request == 2) {
 				request = 0;
-				proxy.web(req, res, {target: 'http://54.201.124.181:3001'}, function(err, data) {
+				proxy.web(req, res, {target: 'http://54.201.124.64:3001'}, function(err, data) {
 					console.log("Fetching request from canary");
 				});
 			}
 		} else {
-			proxy.web(req, res, {target: 'http://54.213.155.64:3001'}, function(err, data) {
+			proxy.web(req, res, {target: 'http://54.213.155.181:3001'}, function(err, data) {
 				console.log("Fetching request from production");
 			});
 		}
