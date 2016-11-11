@@ -15,7 +15,7 @@ do
         nodejs setAlertKey.js
         fi
 
-        if [ 1 -eq "$(echo "$CPU > 0.70" | bc)" ]; then
+        if [ 1 -eq "$(echo "$CPU > 0.90" | bc)" ]; then
         echo CPU usage is high. $CPU | mail -s "High CPU usage for $sysname" pooja.jawale@gmail.com
         nodejs setAlertKey.js
         fi
