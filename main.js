@@ -49,7 +49,7 @@ app.get('/recent', function(req, res) {
 })
 
 app.get('/', function(req, res) {
-  res.send('Request sent to Production Server')
+  res.send('Request sent to Canary Server')
 })
 
 app.get('/set', function(req, res) { 
