@@ -12,16 +12,12 @@ do
 
         if [ 1 -eq "$(echo "$MEMORY > 90.00" | bc)" ]; then
         echo memory usage is high. $MEMORY% | mail -s "High memory usage for $sysname" pooja.jawale@gmail.com
-        redis-cli -h 54.245.30.181 set alertKey true
-        else
-        redis-cli -h 54.245.30.181 set alertKey false
+        nodejs setAlertKey.js
         fi
 
         if [ 1 -eq "$(echo "$CPU > 0.70" | bc)" ]; then
         echo CPU usage is high. $CPU | mail -s "High CPU usage for $sysname" pooja.jawale@gmail.com
-        redis-cli -h 54.245.30.181 set alertKey true
-        else
-        redis-cli -h 54.245.30.181 set alertKey false
+        nodejs setAlertKey.js
         fi
 
         sleep 15
