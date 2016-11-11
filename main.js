@@ -17,7 +17,7 @@ var proxy  = httpProxy.createProxyServer(options)
 port = 3010;
 
 // REDIS
-var client = redis.createClient(6379, '162.243.204.67', {})
+var client = redis.createClient(6379, '54.191.101.251', {})
 
 ///////////// WEB ROUTES
 

@@ -4,7 +4,7 @@ printf "checking for autoscale \n"
 end=0
 while [ $end -ne -1 ]; 
 do
-        value=$(redis-cli -h 162.243.204.67 get alertKey)
+        value=$(redis-cli -h 54.191.101.251 get alertKey)
         echo $value
         if [ "$value" = "true" ]; then
         echo spawn new instance
