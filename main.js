@@ -1,7 +1,9 @@
 //function makeServer() {
 var redis = require('redis')
+var ab = require('express-ab')
 var multer  = require('multer')
 var express = require('express')
+var cookieParser = require('cookie-parser');
 var fs      = require('fs')
 var app = express()
 var exec = require('child_process').exec;
@@ -12,13 +14,35 @@ var httpProxy = require('http-proxy')
 var options = {}
 var proxy  = httpProxy.createProxyServer(options)
 
+
+app.use(function (req, res, next) {
+  var cookie = req.headers.cookie;
+  if (cookie == undefined)
+  {
+    var randomNumber=Math.random().toString();
+    randomNumber=randomNumber.substring(2,randomNumber.length);
+    res.cookie("cookieName",randomNumber, { maxAge: 900000, httpOnly: true });
+    client.lpush('cookies','cookieName='+randomNumber)
+    console.log('cookie set')
+  } 
+  else
+  {
+    client.lrange('cookies', 0, -1, function(err, message) {
+      console.log(message);
+    })
+    console.log('cookie exists', cookie);
+  } 
+  next();
+});
+
 //var args = process.argv.slice(2);
 //var PORT = args[0];
+
 port = 3010;
 
 // REDIS
-var client = redis.createClient(6379, '54.203.4.153', {})
-
+var client = redis.createClient(6379, '127.0.0.1', {})
+app.use(cookieParser());
 ///////////// WEB ROUTES
 
 // Add hook to make it easier to get all visited URLS.
@@ -49,7 +73,7 @@ app.get('/recent', function(req, res) {
 })
 
 app.get('/', function(req, res) {
-  res.send('Request sent to Production Server')
+  res.send('variant A')
 })
 
 app.get('/set', function(req, res) { 
@@ -152,28 +176,22 @@ app.get('/deleteList', function(req, res) {
 })
 
 //HTTP Server
-var server = app.listen(3001, function () {
+var server1 = app.listen(3001, function () {
 
-  var host = server.address().address
-  var port = server.address().port
+  var host1 = server1.address().address
+  var port1 = server1.address().port
   var serverURL = "http://localhost:3001";
   //console.log(serverURL)
- // client.lpush('ServersQueue',serverURL,function(err, reply) {})
-  console.log('Example app listening at http://%s:%s', host, port)
+  client.lpush('ProductionQueue',serverURL,function(err, reply) {})
+  console.log('Example app listening at http://%s:%s', host1, port1)
 })
 
-//PROXY SERVER
-var proxyServer = http.createServer(function(req, res) {
+var server2 = app.listen(3002, function () {
 
-			client.rpoplpush('ServersQueue','ServersQueue',function(err,data){
-        console.log("\nRequest routed to server: %s",data);
-
-			  proxy.web(req, res, { target: data});
-		});
-	  
-});
-proxyServer.listen(3000);
-
-//   return server;
-// }
-// module.exports = makeServer;
+  var host2 = server2.address().address
+  var port2 = server2.address().port
+  var serverURL = "http://localhost:3002";
+  //console.log(serverURL)
+  client.lpush('ProductionQueue',serverURL,function(err, reply) {})
+  console.log('Example app listening at http://%s:%s', host2, port2)
+})
