@@ -181,7 +181,7 @@ var server = app.listen(3001, function () {
   var port = server.address().port
   var serverURL = "http://localhost:3001";
   //console.log(serverURL)
-  client.lpush('ProductionQueue',serverURL,function(err, reply) {})
+ // client.lpush('ProductionQueue',serverURL,function(err, reply) {})
   console.log('Example app listening at http://%s:%s', host, port)
 })
 
