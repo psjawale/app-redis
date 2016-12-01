@@ -1,6 +1,5 @@
 //function makeServer() {
 var redis = require('redis')
-var ab = require('express-ab')
 var multer  = require('multer')
 var express = require('express')
 var cookieParser = require('cookie-parser');
@@ -41,7 +40,7 @@ app.use(function (req, res, next) {
 port = 3010;
 
 // REDIS
-var client = redis.createClient(6379, '127.0.0.1', {})
+var client = redis.createClient(6379, '54.202.217.113', {})
 app.use(cookieParser());
 ///////////// WEB ROUTES
 
@@ -73,7 +72,7 @@ app.get('/recent', function(req, res) {
 })
 
 app.get('/', function(req, res) {
-  res.send('variant A')
+  res.send('variant B')
 })
 
 app.get('/set', function(req, res) { 
@@ -176,22 +175,13 @@ app.get('/deleteList', function(req, res) {
 })
 
 //HTTP Server
-var server1 = app.listen(3001, function () {
+var server = app.listen(3001, function () {
 
-  var host1 = server1.address().address
-  var port1 = server1.address().port
+  var host = server.address().address
+  var port = server.address().port
   var serverURL = "http://localhost:3001";
   //console.log(serverURL)
   client.lpush('ProductionQueue',serverURL,function(err, reply) {})
-  console.log('Example app listening at http://%s:%s', host1, port1)
+  console.log('Example app listening at http://%s:%s', host, port)
 })
 
-var server2 = app.listen(3002, function () {
-
-  var host2 = server2.address().address
-  var port2 = server2.address().port
-  var serverURL = "http://localhost:3002";
-  //console.log(serverURL)
-  client.lpush('ProductionQueue',serverURL,function(err, reply) {})
-  console.log('Example app listening at http://%s:%s', host2, port2)
-})
