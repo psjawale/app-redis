@@ -1,0 +1,16 @@
+---
+- hosts: all
+  sudo: true
+
+  tasks:
+    - name: clone project repo in destination
+      git: repo=https://github.com/psjawale/app-redis.git version=canary_release dest=/home/ubuntu/app/ accept_hostkey=true
+
+    - name: Installing dependencies
+      npm: path=/home/ubuntu/app
+
+    - name: Installing forever utility
+      command: npm install -g forever
+
+    - name: Starting webserver
+      command: forever start /home/ubuntu/app/main.js
