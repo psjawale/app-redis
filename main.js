@@ -13,6 +13,12 @@ var httpProxy = require('http-proxy')
 var options = {}
 var proxy  = httpProxy.createProxyServer(options)
 
+var router = express.Router();
+// REDIS
+var client = redis.createClient(6379, '54.187.14.98', {})
+app.use(cookieParser());
+
+var port = 3010;
 
 app.use(function (req, res, next) {
   var cookie = req.headers.cookie;
@@ -22,27 +28,51 @@ app.use(function (req, res, next) {
     randomNumber=randomNumber.substring(2,randomNumber.length);
     res.cookie("cookieName",randomNumber, { maxAge: 900000, httpOnly: true });
     client.lpush('cookies','cookieName='+randomNumber)
-    console.log('cookie set')
+    // console.log('cookie set')
   } 
   else
   {
     client.lrange('cookies', 0, -1, function(err, message) {
-      console.log(message);
     })
     console.log('cookie exists', cookie);
   } 
   next();
 });
 
-//var args = process.argv.slice(2);
-//var PORT = args[0];
 
-port = 3010;
 
-// REDIS
-var client = redis.createClient(6379, '54.202.217.113', {})
-app.use(cookieParser());
-///////////// WEB ROUTES
+router.use(function(req, res, next) {
+    // log each request to the console
+    console.log(req.method, req.url);
+    // continue doing what we were doing and go to the route
+    next(); 
+});
+
+// home page route (http://localhost:8080)
+router.get('/login/:name', function(req, res) {
+    var start = Date.now();
+    client.set(req.params.name,start);
+    res.send('hello ' + req.params.name + '!'+" login time: "+start);
+  //  res.send('im the login page!');  
+});
+
+// about page route (http://localhost:8080/about)
+router.get('/logout/:name', function(req, res) {
+    //res.send('im the logout page!'); 
+    var end = Date.now();
+    client.get(req.params.name,function(err,data){
+    var spent = end-data;
+    client.set(req.params.name,spent);
+    client.get('current_server',function(err,data){
+        client.incrby(data,spent);
+    })
+    res.send('Bye ' + req.params.name + '!' +"time spent: "+spent);
+  }); 
+});
+
+// apply the routes to our application
+app.use('/', router);
+
 
 // Add hook to make it easier to get all visited URLS.
 app.use(function(req, res, next) 
@@ -71,9 +101,9 @@ app.get('/recent', function(req, res) {
   })
 })
 
-app.get('/', function(req, res) {
-  res.send('variant B')
-})
+// app.get('/', function(req, res) {
+//   res.send('variant B')
+// })
 
 app.get('/set', function(req, res) { 
   var message = "this message will self-destruct in 10 seconds"
@@ -184,4 +214,3 @@ var server = app.listen(3001, function () {
  // client.lpush('ProductionQueue',serverURL,function(err, reply) {})
   console.log('Example app listening at http://%s:%s', host, port)
 })
-
