@@ -52,7 +52,7 @@ router.use(function(req, res, next) {
 router.get('/login/:name', function(req, res) {
     var start = Date.now();
     client.set(req.params.name,start);
-    res.send('Hello ' + req.params.name + '!'+' You are logged in to variant A website');
+    res.send('Hello ' + req.params.name + '!'+' You are logged in to variant B website');
   //  res.send('im the login page!');  
 });
 
